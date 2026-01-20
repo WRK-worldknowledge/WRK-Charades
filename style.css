@@ -1,0 +1,8 @@
+body{margin:0;font-family:sans-serif;background:#eee;color:#333;text-align:center}
+.logo{max-width:200px;margin:20px}
+#code{font-size:120px;font-weight:bold;margin:40px}
+#timer{font-size:24px}
+.hidden{display:none}
+button{padding:10px 20px;margin:5px;background:#b00020;color:white;border:none;font-size:16px}
+.actions button{font-size:24px;width:60px}
+#hint{font-size:48px;padding:40px}
