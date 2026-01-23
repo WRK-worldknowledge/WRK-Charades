@@ -90,22 +90,26 @@ function initTilt(){
 }
 
 function handleTilt(e){
- const beta = e.beta; // front/back tilt
+ const beta = e.beta;
  if(beta === null) return;
 
  const now = Date.now();
  if(now - lastActionTime < ACTION_DELAY) return;
 
- // Telefoon omlaag = goed
- if(beta > 15){
+ // Debug (optioneel): laat waarde zien
+ // document.getElementById('timer').innerText = `Tilt beta: ${Math.round(beta)}`;
+
+ // Telefoon VOOROVER (goed)
+ if(beta < -12){
    lastActionTime = now;
    good();
  }
 
- // Telefoon omhoog/achterover = skip
- else if(beta < -15){
+ // Telefoon ACHTEROVER (skip)
+ else if(beta > 12){
    lastActionTime = now;
    skip();
  }
 }
+
 
