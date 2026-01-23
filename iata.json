@@ -302,13 +302,13 @@
   {
     "module": "AM",
     "country": "Aruba",
-    "city": "Aruba",
+    "city": "Oranjestad",
     "code": "AUA"
   },
   {
     "module": "AM",
     "country": "Bonaire (NL. overseas ter.)",
-    "city": "Bonaire",
+    "city": "Kralendijk",
     "code": "BON"
   },
   {
@@ -410,7 +410,7 @@
   {
     "module": "AM",
     "country": "Curacao",
-    "city": "Cura\u00e7ao",
+    "city": "Willemstad",
     "code": "CUR"
   },
   {
@@ -500,7 +500,7 @@
   {
     "module": "AM",
     "country": "Sint Maarten",
-    "city": "Sint Maarten",
+    "city": "Philipsburg",
     "code": "SXM"
   },
   {

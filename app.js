@@ -1,4 +1,5 @@
-let allData=[], gameData=[], i=0, score=0, time=60, timer, mode='train';
+
+let allData=[], gameData=[], i=0, score=0, time=60, timer, mode='train', gameType='code-to-city';
 
 const moduleNames={
  'AFR':'Africa',
@@ -14,7 +15,7 @@ fetch('iata.json').then(r=>r.json()).then(d=>{
  const mods=[...new Set(d.map(x=>x.module))];
  const c=document.getElementById('modules');
  mods.forEach(m=>{
-  c.innerHTML+=`<label><input type="checkbox" value="${m}" checked> ${moduleNames[m]}</label><br>`;
+  c.innerHTML+=`<label><input type="checkbox" value="${m}" checked> ${moduleNames[m]||m}</label><br>`;
  });
 });
 
@@ -23,12 +24,17 @@ function setMode(m){
  document.getElementById('modules').style.display = m==='exam' ? 'none':'block';
 }
 
+function setGameType(t){
+ gameType=t;
+}
+
 function startGame(){
- const checked=[...document.querySelectorAll('input:checked')].map(x=>x.value);
+ const checked=[...document.querySelectorAll('#modules input:checked')].map(x=>x.value);
  gameData = mode==='exam' ? allData.slice() : allData.filter(x=>checked.includes(x.module));
  gameData.sort(()=>Math.random()-0.5);
  document.getElementById('start').classList.add('hidden');
  document.getElementById('game').classList.remove('hidden');
+ score=0; i=0; time=60;
  timer=setInterval(tick,1000);
  show();
 }
@@ -41,7 +47,8 @@ function tick(){
 
 function show(){
  if(i>=gameData.length){i=0;}
- document.getElementById('code').innerText=gameData[i].code;
+ const item=gameData[i];
+ document.getElementById('code').innerText = (gameType==='city-to-code') ? item.city : item.code;
 }
 
 function good(){
@@ -51,9 +58,11 @@ function good(){
 }
 
 function skip(){
+ const item=gameData[i];
  document.getElementById('game').classList.add('hidden');
  const h=document.getElementById('hint');
- h.innerHTML=`${gameData[i].city}, ${gameData[i].country}<br><small>tap to continue</small>`;
+ let answer = (gameType==='city-to-code') ? item.code : item.city;
+ h.innerHTML=`${answer} — ${item.country}<br><small>tap to continue</small>`;
  h.classList.remove('hidden');
 }
 
