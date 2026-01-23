@@ -1,22 +1,17 @@
-
-let allData=[], gameData=[], i=0, score=0, time=60, timer, mode='train', gameType='code-to-city';
-
-let lastActionTime = 0;
-const ACTION_DELAY = 500; // voorkomt dubbele acties
+let allData=[], gameData=[], i=0, score=0, time=60, timer;
+let mode='train', gameType='code-to-city';
+let tiltState = "neutral";
 
 const moduleNames={
- 'AFR':'Africa',
- 'EURW':'Western Europe',
- 'EURO':'Eastern Europe',
- 'AM':'America',
- 'AUS':'Oceania',
- 'ASIA':'Asia'
+ 'AFR':'Africa','EURW':'Western Europe','EURO':'Eastern Europe',
+ 'AM':'America','AUS':'Oceania','ASIA':'Asia'
 };
 
 fetch('iata.json').then(r=>r.json()).then(d=>{
  allData=d;
  const mods=[...new Set(d.map(x=>x.module))];
  const c=document.getElementById('modules');
+ c.innerHTML="";
  mods.forEach(m=>{
   c.innerHTML+=`<label><input type="checkbox" value="${m}" checked> ${moduleNames[m]||m}</label><br>`;
  });
@@ -27,21 +22,23 @@ function setMode(m){
  document.getElementById('modules').style.display = m==='exam' ? 'none':'block';
 }
 
-function setGameType(t){
- gameType=t;
-}
+function setGameType(t){ gameType=t; }
 
 function startGame(){
  const checked=[...document.querySelectorAll('#modules input:checked')].map(x=>x.value);
  gameData = mode==='exam' ? allData.slice() : allData.filter(x=>checked.includes(x.module));
  gameData.sort(()=>Math.random()-0.5);
+
  document.getElementById('start').classList.add('hidden');
+ document.getElementById('end').classList.add('hidden');
+ document.getElementById('hint').classList.add('hidden');
  document.getElementById('game').classList.remove('hidden');
+
  score=0; i=0; time=60;
  timer=setInterval(tick,1000);
-initTilt();
-show();
 
+ initTilt();
+ show();
 }
 
 function tick(){
@@ -84,60 +81,12 @@ function end(){
  document.getElementById('end').classList.remove('hidden');
  document.getElementById('score').innerText=`Final score: ${score}`;
 }
-// ---- Tilt controls ----
-function initTilt(){
- window.addEventListener("deviceorientation", handleTilt, true);
-}
 
-let readyForNext = true;
-
-let tiltState = "neutral"; 
-// states: neutral → forward → back
-
-let tiltState = "neutral";
-
-function handleTilt(e){
- const beta = e.beta;
- if(beta === null) return;
-
- const FORWARD_THRESHOLD = -16;   // goed
- const BACK_THRESHOLD = 12;        // skip (minder streng)
- const NEUTRAL_MIN = -7;
- const NEUTRAL_MAX = 7;
-
- // Reset alleen bij echte neutraalstand
- if(beta > NEUTRAL_MIN && beta < NEUTRAL_MAX){
-   tiltState = "neutral";
-   return;
- }
-
- // Voorover = goed
- if(beta < FORWARD_THRESHOLD && tiltState === "neutral"){
-   tiltState = "forward";
-   good();
- }
-
- // Achterover = skip
- else if(beta > BACK_THRESHOLD && tiltState === "neutral"){
-   tiltState = "back";
-   skip();
- }
-}
 function resetGame(){
  clearInterval(timer);
+ tiltState="neutral";
 
- // Reset state
- i = 0;
- score = 0;
- time = 60;
- tiltState = "neutral";
-
- // UI reset
  document.getElementById('end').classList.add('hidden');
  document.getElementById('game').classList.add('hidden');
  document.getElementById('hint').classList.add('hidden');
- document.getElementById('start').classList.remove('hidden');
-
- document.getElementById('timer').innerText = "";
- document.getElementById('code').innerText = "";
-}
+ document.getElementByI
