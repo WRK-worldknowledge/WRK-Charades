@@ -94,16 +94,18 @@ let readyForNext = true;
 let tiltState = "neutral"; 
 // states: neutral → forward → back
 
+let tiltState = "neutral";
+
 function handleTilt(e){
  const beta = e.beta;
  if(beta === null) return;
 
- const FORWARD_THRESHOLD = -18; 
- const BACK_THRESHOLD = 18;
- const NEUTRAL_MIN = -6;
- const NEUTRAL_MAX = 6;
+ const FORWARD_THRESHOLD = -16;   // goed
+ const BACK_THRESHOLD = 12;        // skip (minder streng)
+ const NEUTRAL_MIN = -7;
+ const NEUTRAL_MAX = 7;
 
- // Alleen resetten als telefoon echt weer recht staat
+ // Reset alleen bij echte neutraalstand
  if(beta > NEUTRAL_MIN && beta < NEUTRAL_MAX){
    tiltState = "neutral";
    return;
