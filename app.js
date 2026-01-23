@@ -91,30 +91,33 @@ function initTilt(){
 
 let readyForNext = true;
 
+let tiltState = "neutral"; 
+// states: neutral → forward → back
+
 function handleTilt(e){
  const beta = e.beta;
  if(beta === null) return;
 
- // Neutraal-positie reset
- if(beta > -8 && beta < 8){
-   readyForNext = true;
+ const FORWARD_THRESHOLD = -18; 
+ const BACK_THRESHOLD = 18;
+ const NEUTRAL_MIN = -6;
+ const NEUTRAL_MAX = 6;
+
+ // Alleen resetten als telefoon echt weer recht staat
+ if(beta > NEUTRAL_MIN && beta < NEUTRAL_MAX){
+   tiltState = "neutral";
    return;
  }
 
- if(!readyForNext) return;
-
  // Voorover = goed
- if(beta < -12){
-   readyForNext = false;
+ if(beta < FORWARD_THRESHOLD && tiltState === "neutral"){
+   tiltState = "forward";
    good();
  }
 
  // Achterover = skip
- else if(beta > 12){
-   readyForNext = false;
+ else if(beta > BACK_THRESHOLD && tiltState === "neutral"){
+   tiltState = "back";
    skip();
  }
 }
-
-
-
