@@ -123,3 +123,21 @@ function handleTilt(e){
    skip();
  }
 }
+function resetGame(){
+ clearInterval(timer);
+
+ // Reset state
+ i = 0;
+ score = 0;
+ time = 60;
+ tiltState = "neutral";
+
+ // UI reset
+ document.getElementById('end').classList.add('hidden');
+ document.getElementById('game').classList.add('hidden');
+ document.getElementById('hint').classList.add('hidden');
+ document.getElementById('start').classList.remove('hidden');
+
+ document.getElementById('timer').innerText = "";
+ document.getElementById('code').innerText = "";
+}
