@@ -2,7 +2,7 @@
 let allData=[], gameData=[], i=0, score=0, time=60, timer, mode='train', gameType='code-to-city';
 
 let lastActionTime = 0;
-const ACTION_DELAY = 1200; // voorkomt dubbele acties
+const ACTION_DELAY = 500; // voorkomt dubbele acties
 
 const moduleNames={
  'AFR':'Africa',
@@ -89,27 +89,32 @@ function initTilt(){
  window.addEventListener("deviceorientation", handleTilt, true);
 }
 
+let readyForNext = true;
+
 function handleTilt(e){
  const beta = e.beta;
  if(beta === null) return;
 
- const now = Date.now();
- if(now - lastActionTime < ACTION_DELAY) return;
+ // Neutraal-positie reset
+ if(beta > -8 && beta < 8){
+   readyForNext = true;
+   return;
+ }
 
- // Debug (optioneel): laat waarde zien
- // document.getElementById('timer').innerText = `Tilt beta: ${Math.round(beta)}`;
+ if(!readyForNext) return;
 
- // Telefoon VOOROVER (goed)
+ // Voorover = goed
  if(beta < -12){
-   lastActionTime = now;
+   readyForNext = false;
    good();
  }
 
- // Telefoon ACHTEROVER (skip)
+ // Achterover = skip
  else if(beta > 12){
-   lastActionTime = now;
+   readyForNext = false;
    skip();
  }
 }
+
 
 
