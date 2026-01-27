@@ -22,6 +22,8 @@ button{
 .hidden{display:none;}
 #code{font-size:110px;font-weight:bold;margin-top:40px;}
 #timer{font-size:20px;margin-top:10px;}
-.flash-good{background:#c8f7c5 !important;}
-.flash-bad{background:#ffcccc !important;}
+.flash-good{background:#7CFC90 !important;}
+.flash-bad{background:#FF6B6B !important;}
+setTimeout(()=>document.body.classList.remove(type),350);
+
 #hint{font-size:42px;padding:40px;}
