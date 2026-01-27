@@ -100,26 +100,34 @@ function initTilt(){
  window.addEventListener("deviceorientation", handleTilt, true);
 }
 
+let tiltState = "neutral";
+
 function handleTilt(e){
- const beta=e.beta;
- if(beta===null) return;
+ const beta = e.beta;
+ if(beta === null) return;
 
- const FORWARD=-16;
- const BACK=12;
- const NEUTRAL_MIN=-7;
- const NEUTRAL_MAX=7;
+ // Drempels afgestemd op Android + voorhoofd-houding
+ const FORWARD_THRESHOLD = -20;   // goed
+ const BACK_THRESHOLD = 20;       // skip
+ const NEUTRAL_MIN = -8;
+ const NEUTRAL_MAX = 8;
 
- if(beta>NEUTRAL_MIN && beta<NEUTRAL_MAX){
-   tiltState='neutral';
+ // Reset alleen als hij écht recht staat
+ if(beta > NEUTRAL_MIN && beta < NEUTRAL_MAX){
+   tiltState = "neutral";
    return;
  }
 
- if(beta<FORWARD && tiltState==='neutral'){
-   tiltState='forward';
+ // Voorover = goed
+ if(beta < FORWARD_THRESHOLD && tiltState === "neutral"){
+   tiltState = "forward";
    good();
  }
- else if(beta>BACK && tiltState==='neutral'){
-   tiltState='back';
+
+ // Achterover = skip
+ else if(beta > BACK_THRESHOLD && tiltState === "neutral"){
+   tiltState = "back";
    skip();
  }
 }
+
