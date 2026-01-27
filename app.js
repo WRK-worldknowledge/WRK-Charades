@@ -121,13 +121,15 @@ function handleTilt(e){
  // Voorover = goed
  if(beta < FORWARD_THRESHOLD && tiltState === "neutral"){
    tiltState = "forward";
-   good();
+   good(if (navigator.vibrate) navigator.vibrate(60);
+);
  }
 
  // Achterover = skip
  else if(beta > BACK_THRESHOLD && tiltState === "neutral"){
    tiltState = "back";
-   skip();
+   skip(if (navigator.vibrate) navigator.vibrate([100, 40, 100]);
+);
  }
 }
 
