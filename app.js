@@ -3,6 +3,16 @@ let allData=[], gameData=[], i=0, score=0, time=60, timer;
 let mode='train', gameType='code-to-city';
 let tiltState='neutral';
 
+const failSound = new Audio("fail.mp3");
+function skip(){
+ if (navigator.vibrate) navigator.vibrate([100, 40, 100]);
+ failSound.play();
+
+ flash('flash-bad');
+ ...
+}
+
+
 const moduleNames={
  'AFR':'Africa','EURW':'Western Europe','EURO':'Eastern Europe',
  'AM':'America','AUS':'Oceania','ASIA':'Asia'
